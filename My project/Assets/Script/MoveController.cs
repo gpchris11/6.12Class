@@ -7,6 +7,7 @@ public class MoveController : MonoBehaviour
     [Header("플레이어 이동 및 점프")]
     Rigidbody2D rigid;
     CapsuleCollider2D coll;
+    BoxCollider2D Box2d;
     Animator anim;
     Vector3 moveDir;
     float verticalVelocity = 0f; //수직으로 떨어지는 힘
@@ -21,6 +22,8 @@ public class MoveController : MonoBehaviour
     
     [SerializeField] bool isGround;//인스펙터에서 플레이어가 플랫폼타일에 착지 했는지
     bool isJump;
+
+    Camera camMain;
 
     private void OnDrawGizmos()
     {
@@ -39,12 +42,13 @@ public class MoveController : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        Box2d = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
     }
 
     void Start()
     {
-        
+        camMain = Camera.main;
     }
 
     // Update is called once per frame
@@ -53,6 +57,7 @@ public class MoveController : MonoBehaviour
         checkGrounded();
 
         Moving();
+        checkAim();
         jump();
 
         checkGrav();
@@ -73,22 +78,74 @@ public class MoveController : MonoBehaviour
         //Layer의 int와 공통적으로 활용하는 int와 다름
 
         RaycastHit2D hit = 
-        Physics2D.Raycast(transform.position, Vector2.down, groundCheckLength, LayerMask.GetMask("Ground"));
-        
-        if(hit)
+        //Physics2D.Raycast(transform.position, Vector2.down, groundCheckLength, LayerMask.GetMask("Ground"));
+
+        Physics2D.BoxCast(Box2d.bounds.center, Box2d.bounds.size, 0f, Vector2.down, 0.05f, LayerMask.GetMask("Ground"));
+        if (hit)
         {
             isGround = true;
         }
+
     }
+
+
+    private void checkAim()
+    {
+        //transform.localPosition; 씬 공간에서 부모의 좌표기준
+        //transform.position; 씬 공간에서의 좌표
+
+        ///좌우 쳐다보기
+
+        //    Vector3 scale = transform.localScale;
+        //if (moveDir.x < 0 && scale.x != 1.0f )//왼쪽
+
+        //{
+        //    scale.x = 1.0f;
+        //    transform.localScale = scale;
+
+
+        //}
+        //else if(moveDir.x > 0 && scale.x != -1.0f)//오른쪽
+        //{
+        //    scale.x = -1.0f;
+        //    transform.localScale = scale;
+        //}
+        ///
+
+        
+        Vector2 mouseWorldPos = camMain.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 playerPos =  transform.position;
+        Vector2 fixedPos = mouseWorldPos - playerPos;
+       
+
+        Vector3 playerScale = transform.localScale;
+        if (fixedPos.x > 0 && playerScale.x != -1.0f)
+        {
+            playerScale.x = -1.0f;
+        }
+        else if (fixedPos.x < 0 && playerScale.x != 1.0f)
+        {
+            playerScale.x = 1.0f;
+        }
+        transform.localScale = playerScale;
+
+
+
+    }
+
+
+
     private void Moving()
     {
         //좌우키를 누르면 좌우로 움직인다
-        moveDir.x = Input.GetAxisRaw("Horizontal");//a, L A ke -1, d R A key 1, 아무것도 입력하지 않으면 0
+        moveDir.x = Input.GetAxisRaw("Horizontal") * moveSpeed;//a, L A ke -1, d R A key 1, 아무것도 입력하지 않으면 0
         moveDir.y = rigid.velocity.y;
         rigid.velocity = moveDir;
 
         //슈팅게임 만들때는 오브젝트를 코드에 의해서 순간이동하게 만듬
         //물리에 의해서 이동
+
+        
 
 
     }
