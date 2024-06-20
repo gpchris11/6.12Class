@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
+
 public class MoveController : MonoBehaviour
 {
     [Header("플레이어 이동 및 점프")]
@@ -31,16 +35,28 @@ public class MoveController : MonoBehaviour
     [SerializeField] float WallJumpTime = 0.3f;
     float WallJumpTimer = 0.0f;//타이머
 
-    [Header("대시")]
+    [Header("대쉬")]
     [SerializeField] private float dashTime = 0.3f;
     [SerializeField] private float dashSpeed = 20.0f;
     float dashTimer = 0.0f;//타이머
     //대시이펙트
+    TrailRenderer dashEffect;
+    [SerializeField] private float dashCoolTime = 2f;
+    float dashCoolTimer = 0.0f;
+
+    [Header("대쉬 UI")]
+    [SerializeField] GameObject ObjDashCoolTime;
+    [SerializeField] Image ImgFade;
+    [SerializeField] TMP_Text TextCoolTime;
+
 
     [SerializeField] KeyCode dashKey;
 
+    
     private void OnDrawGizmos()
     {
+
+
         if (showGroundCheck == true)
         {
             Debug.DrawLine(transform.position, transform.position - new Vector3(0, groundCheckLength), colorGroundCheck);//현재위치에서 일정 y값 아래로
@@ -96,6 +112,9 @@ public class MoveController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         Box2d = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+        dashEffect = GetComponent<TrailRenderer>();
+        dashEffect.enabled = false;
+        initUi();
     }
 
     void Start()
@@ -123,11 +142,18 @@ public class MoveController : MonoBehaviour
 
     private void dash()
     {
-        if (dashTimer == 0.0f && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.F)))
+        if (dashTimer == 0.0f && dashCoolTimer == 0.0f && 
+            (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.F)))
         {
             //Input.GetKeyDown(dashKey); [SerializeField] KeyCode dashKey; 키 입력하기
             dashTimer = dashTime;
+            dashCoolTimer = dashCoolTime;
             verticalVelocity = 0;
+            dashEffect.enabled = true;
+            
+            
+
+            
 
             //if (transform.localScale.x > 0)//왼쪽
             //{
@@ -154,13 +180,39 @@ public class MoveController : MonoBehaviour
                 WallJumpTimer = 0.0f;
             }
         }
+
         if(dashTimer > 0.0f)
         {
             dashTimer -= Time.deltaTime;
             if(dashTimer < 0.0f)
             {
                 dashTimer = 0.0f;
+                dashEffect.enabled = false;
+                dashEffect.Clear();
             }
+        }
+
+        if(dashCoolTimer > 0.0f)
+        {
+            //ObjDashCoolTime.SetActive(true);
+            if (ObjDashCoolTime.activeSelf == false)
+            {
+                ObjDashCoolTime.SetActive(true);
+            }    
+
+
+            dashCoolTimer -= Time.deltaTime;
+            if (dashCoolTimer < 0.0f)
+            {
+                dashCoolTimer = 0.0f;
+                ObjDashCoolTime.SetActive(false);
+            }
+
+            //대쉬쿨타임 = 2초, 스킬을 쓰면 0, 점점 1이 되어가야함
+
+
+            ImgFade.fillAmount = 1 - dashCoolTimer / dashCoolTime;
+            TextCoolTime.text = dashCoolTimer.ToString("F1");
         }
     }
 
@@ -336,6 +388,13 @@ public class MoveController : MonoBehaviour
     {
         anim.SetInteger("Horizontal", (int)moveDir.x);
         anim.SetBool("IsGround", isGround);
+    }
+
+    private void initUi()
+    {
+        ObjDashCoolTime.SetActive(false);
+        ImgFade.fillAmount = 0;
+        TextCoolTime.text = "";
     }
 }
 
