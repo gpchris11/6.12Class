@@ -12,6 +12,7 @@ public class MoveCam : MonoBehaviour
 
         fixedPos.z = transform.position.z;
 
+
         transform.position = fixedPos;
     }
 }

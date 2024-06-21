@@ -17,6 +17,7 @@ public class HitBox : MonoBehaviour
         moveController = GetComponentInParent<MoveController>();
     }
 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         moveController.TriggerEnter(hitboxType, collision);
