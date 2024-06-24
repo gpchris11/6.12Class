@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 3134919653099517743}
   - component: {fileID: 2722051117324316877}
   - component: {fileID: 9122789492702409293}
-  m_Layer: 0
-  m_Name: Sword_02
+  - component: {fileID: -7285251610702923782}
+  m_Layer: 8
+  m_Name: Fab_Sword_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,3 +126,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed0e223cf5c0ec44b5096af5eb2c3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &-7285251610702923782
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3635937186585552774}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.005999379, y: 0.2319758}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.57699996, y: 1.8580126}
+    newSize: {x: 5.77, y: 18.53}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.34902376, y: 1.3940609}
+  m_EdgeRadius: 0
