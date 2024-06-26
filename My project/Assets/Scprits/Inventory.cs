@@ -9,6 +9,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject viewInventory;//인벤토리 뷰
     [SerializeField] GameObject fabItem;//인벤토리에 생성될 프리팹
 
+    [SerializeField] Transform canvasInventory;
+    public Transform CanvasInventory => canvasInventory;
+
     List<Transform> ListTrsInventory = new List<Transform>();
     private void Awake()
     {
@@ -70,5 +73,18 @@ public class Inventory : MonoBehaviour
         }
         return -1;
     }
-    
+
+    public bool getItem(string _idx)
+    {
+        int slotNum = getEmptyItemSlot();
+        if (slotNum == -1)
+        {
+            return false;
+        }
+
+        GameObject go = Instantiate(fabItem, ListTrsInventory[slotNum]);
+        //오브젝트에게 너는 _idx번호가 너의 정보 데이터임
+        return true;
+    }
+
 }
