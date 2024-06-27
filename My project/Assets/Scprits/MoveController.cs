@@ -9,7 +9,6 @@ using TMPro;
 public class MoveController : MonoBehaviour
 {
     [Header("플레이어 이동 및 점프")]
-
     Rigidbody2D rigid;//null
     CapsuleCollider2D coll;
     BoxCollider2D box2d;

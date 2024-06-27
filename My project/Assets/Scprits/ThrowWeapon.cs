@@ -8,10 +8,13 @@ public class ThrowWeapon : MonoBehaviour
     Vector2 force;
     bool right;
     bool isDone = false;
+    BoxCollider2D coll;
+
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();    
     }
+
     void Start()
     {
         rigid.AddForce(force, ForceMode2D.Impulse);
@@ -22,13 +25,12 @@ public class ThrowWeapon : MonoBehaviour
         isDone = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isDone == true) return;
 
         transform.Rotate(new Vector3(0, 0, 
-            right == true ? -360f : 360) * Time.deltaTime);
+            right == true ? -360f : 360f) * Time.deltaTime);
     }
 
     public void SetForce(Vector2 _force, bool _isRight)

@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-    Inventory inventortManager;
-    // Start is called before the first frame update
+    InventoryManager inventoryManager;
+
     private void Start()
     {
-        inventortManager = Inventory.Instance;
+        inventoryManager = InventoryManager.Instance;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.I) && inventortManager != null) 
+        if (Input.GetKeyDown(KeyCode.I) && inventoryManager != null)
         {
-            inventortManager.InActiveInventory();
+            inventoryManager.InActiveInventory();
         }
     }
 }
