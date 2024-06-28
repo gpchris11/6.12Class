@@ -12,10 +12,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler ,IDragHandler, IEndDragHa
     Transform beforeParent;//혹시 잘못된 위치에 드롭하게되면 돌아오게 만들 위치
 
     CanvasGroup canvasGroup;//자식들을 통합 관리하는 컴포넌트
+    Image imgItem;
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        
     }
 
     void Start()
@@ -30,7 +32,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler ,IDragHandler, IEndDragHa
     /// <param name="_idx">아이템의 인덱스 넘버</param>
     public void SetItem(string _idx)
     {
-        
+        string spriteName = JsonManager.Instance.GetSpriteNameFromIdx(_idx);
+
+        imgItem = GetComponent<Image>();
+        imgItem.sprite = SpriteManager.instance.GetSprite(spriteName);
+
+
     }
 
     public void OnBeginDrag(PointerEventData eventData)
